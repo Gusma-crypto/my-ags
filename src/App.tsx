@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import ReactMarkdown from 'react-markdown';
 import { 
   Github, 
   Twitter, 
@@ -13,7 +14,10 @@ import {
   MapPin, 
   Instagram,
   BookOpen,
-  Youtube
+  Youtube,
+  ArrowLeft,
+  Calendar,
+  Clock
 } from 'lucide-react';
 
 // --- Data ---
@@ -69,6 +73,30 @@ const PROJECTS = [
 ];
 
 const CATEGORIES = ["All", "Web3", "Full-Stack", "Networking", "Infrastructure"];
+const BLOG_CATEGORIES = ["All", "Web3", "Infrastructure", "Networking", "Tutorial"];
+
+const BLOG_POSTS = [
+  {
+    id: 'hybrid-it',
+    title: "Membangun Infrastruktur Hybrid IT di 2026",
+    excerpt: "Infrastruktur hybrid IT kini menjadi standar bagi perusahaan yang ingin menggabungkan fleksibilitas cloud dengan kontrol on-premise.",
+    date: "March 1, 2026",
+    readTime: "5 min read",
+    category: "Infrastructure",
+    image: "https://picsum.photos/seed/hybrid/800/400",
+    file: "/posts/hybrid-it.md"
+  },
+  {
+    id: 'web3-voting',
+    title: "Masa Depan Web3 dan Decentralized Voting",
+    excerpt: "Web3 bukan hanya tentang crypto, tapi tentang kedaulatan digital. Salah satu implementasi paling menarik adalah sistem voting terdesentralisasi.",
+    date: "February 25, 2026",
+    readTime: "7 min read",
+    category: "Web3",
+    image: "https://picsum.photos/seed/voting/800/400",
+    file: "/posts/web3-voting.md"
+  }
+];
 
 // --- Components ---
 
@@ -126,7 +154,7 @@ const Sidebar = () => {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[10px] text-muted uppercase tracking-wider font-semibold">Location</p>
-              <p className="text-sm">Bandar Lampung, Indonesia</p>
+              <p className="text-sm">Bandar Lampung, Lampung Regency</p>
             </div>
           </div>
         </div>
@@ -138,10 +166,37 @@ const Sidebar = () => {
 const MainContent = () => {
   const [activeTab, setActiveTab] = useState('About');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [activeBlogCategory, setActiveBlogCategory] = useState('All');
+  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+  const [postContent, setPostContent] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (selectedPost) {
+      const post = BLOG_POSTS.find(p => p.id === selectedPost);
+      if (post) {
+        setIsLoading(true);
+        fetch(post.file)
+          .then(res => res.text())
+          .then(text => {
+            setPostContent(text);
+            setIsLoading(false);
+          })
+          .catch(err => {
+            console.error("Failed to load post:", err);
+            setIsLoading(false);
+          });
+      }
+    }
+  }, [selectedPost]);
 
   const filteredProjects = activeCategory === 'All' 
     ? PROJECTS 
     : PROJECTS.filter(p => p.category === activeCategory);
+
+  const filteredPosts = activeBlogCategory === 'All'
+    ? BLOG_POSTS
+    : BLOG_POSTS.filter(p => p.category === activeBlogCategory);
 
   return (
     <main className="flex-1 min-w-0">
@@ -149,10 +204,13 @@ const MainContent = () => {
         {/* Navigation */}
         <div className="flex justify-center p-6 border-b border-border bg-zinc-900/20">
           <nav className="flex gap-8">
-            {['About', 'Portfolio', 'Contact'].map((tab) => (
+            {['About', 'Portfolio', 'Blog', 'Contact'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => {
+                  setActiveTab(tab);
+                  setSelectedPost(null);
+                }}
                 className={`text-sm font-semibold transition-colors ${activeTab === tab ? 'text-accent' : 'text-muted hover:text-white'}`}
               >
                 {tab}
@@ -163,14 +221,20 @@ const MainContent = () => {
 
         {/* Content Area */}
         <div className="p-8 lg:p-12">
-          {activeTab === 'About' && (
-            <section>
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold mb-2">About Me</h2>
-                <div className="w-12 h-1 bg-accent rounded-full mb-6"></div>
-                <h3 className="text-xl font-bold text-white mb-2">Hybrid IT Infrastructure & Web3 Developer</h3>
-                <p className="text-accent italic text-sm">"Bridging the gap between physical networks and decentralized innovation."</p>
-              </div>
+          <AnimatePresence mode="wait">
+            {activeTab === 'About' && (
+              <motion.section
+                key="about"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold mb-2">About Me</h2>
+                  <div className="w-12 h-1 bg-accent rounded-full mb-6"></div>
+                  <h3 className="text-xl font-bold text-white mb-2">Hybrid IT Infrastructure & Web3 Developer</h3>
+                  <p className="text-accent italic text-sm">"Bridging the gap between physical networks and decentralized innovation."</p>
+                </div>
 
               <div className="space-y-6 text-muted leading-relaxed mb-12">
                 <p>
@@ -254,7 +318,7 @@ const MainContent = () => {
                 <h3 className="text-2xl font-bold mb-4 tracking-tight">LET'S COLLABORATE</h3>
                 <p className="text-muted italic mb-8">"I build the code and the infrastructure that powers it."</p>
                 <div className="flex flex-wrap justify-center gap-8">
-                  <a href="mailto:agussulistionox@gmail.com" className="text-accent font-bold hover:underline flex items-center gap-2">
+                  <a href="mailto:agussulistionoa0@gmail.com" className="text-accent font-bold hover:underline flex items-center gap-2">
                     <Mail size={16} /> Email Me
                   </a>
                   <a href="https://www.linkedin.com/in/agus-sulistiono-591747119/" target="_blank" rel="noopener noreferrer" className="text-[#0077b5] font-bold hover:underline flex items-center gap-2">
@@ -274,11 +338,16 @@ const MainContent = () => {
                   </a>
                 </div>
               </div>
-            </section>
-          )}
+              </motion.section>
+            )}
 
-          {activeTab === 'Portfolio' && (
-            <section>
+            {activeTab === 'Portfolio' && (
+              <motion.section
+                key="portfolio"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
               <div className="mb-8">
                 <h2 className="text-3xl font-bold mb-4">Portfolio</h2>
                 <div className="w-12 h-1 bg-accent rounded-full"></div>
@@ -328,11 +397,142 @@ const MainContent = () => {
                   </motion.a>
                 ))}
               </div>
-            </section>
-          )}
+              </motion.section>
+            )}
 
-          {activeTab === 'Contact' && (
-            <section>
+            {activeTab === 'Blog' && (
+              <motion.section
+                key="blog"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                {!selectedPost ? (
+                  <>
+                    <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                      <div>
+                        <h2 className="text-3xl font-bold mb-4">Blog</h2>
+                        <div className="w-12 h-1 bg-accent rounded-full"></div>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-4">
+                        {BLOG_CATEGORIES.map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => setActiveBlogCategory(cat)}
+                            className={`text-sm font-medium transition-colors ${activeBlogCategory === cat ? 'text-accent' : 'text-muted hover:text-white'}`}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {filteredPosts.map((post, i) => (
+                        <motion.div
+                          key={post.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          onClick={() => setSelectedPost(post.id)}
+                          className="group rounded-2xl bg-zinc-900/50 border border-border overflow-hidden hover:border-accent/50 transition-all cursor-pointer flex flex-col"
+                        >
+                          <div className="relative h-48 overflow-hidden">
+                            <img 
+                              src={post.image} 
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              referrerPolicy="no-referrer"
+                            />
+                            <div className="absolute top-4 left-4">
+                              <span className="px-3 py-1 rounded-lg bg-black/60 backdrop-blur-md text-accent text-[10px] font-bold uppercase tracking-wider border border-white/10">
+                                {post.category}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="p-6 flex-1 flex flex-col">
+                            <div className="flex items-center gap-4 mb-3 text-[10px] text-muted uppercase tracking-widest font-bold">
+                              <span className="flex items-center gap-1.5"><Calendar size={12} /> {post.date}</span>
+                              <span className="flex items-center gap-1.5"><Clock size={12} /> {post.readTime}</span>
+                            </div>
+                            <h3 className="text-lg font-bold mb-3 group-hover:text-accent transition-colors line-clamp-2">{post.title}</h3>
+                            <p className="text-muted text-sm leading-relaxed mb-6 line-clamp-3">{post.excerpt}</p>
+                            <div className="mt-auto">
+                              <span className="text-accent text-xs font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+                                Read Article <BookOpen size={14} />
+                              </span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="max-w-none">
+                    <button 
+                      onClick={() => setSelectedPost(null)}
+                      className="flex items-center gap-2 text-muted hover:text-accent transition-colors mb-8 text-sm font-bold"
+                    >
+                      <ArrowLeft size={16} /> Back to Blog
+                    </button>
+                    
+                    {isLoading ? (
+                      <div className="flex items-center justify-center py-20">
+                        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="max-w-none"
+                      >
+                        {BLOG_POSTS.find(p => p.id === selectedPost) && (
+                          <div className="mb-10">
+                            <div className="relative h-[300px] md:h-[400px] rounded-[32px] overflow-hidden mb-8 border border-border">
+                              <img 
+                                src={BLOG_POSTS.find(p => p.id === selectedPost)?.image} 
+                                alt="Hero"
+                                className="w-full h-full object-cover"
+                                referrerPolicy="no-referrer"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+                              <div className="absolute bottom-8 left-8 right-8">
+                                <div className="flex items-center gap-4 mb-4">
+                                  <span className="px-3 py-1 rounded-lg bg-accent text-white text-[10px] font-bold uppercase tracking-wider">
+                                    {BLOG_POSTS.find(p => p.id === selectedPost)?.category}
+                                  </span>
+                                  <div className="flex items-center gap-4 text-[10px] text-white/80 uppercase tracking-widest font-bold">
+                                    <span className="flex items-center gap-1.5"><Calendar size={12} /> {BLOG_POSTS.find(p => p.id === selectedPost)?.date}</span>
+                                    <span className="flex items-center gap-1.5"><Clock size={12} /> {BLOG_POSTS.find(p => p.id === selectedPost)?.readTime}</span>
+                                  </div>
+                                </div>
+                                <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                                  {BLOG_POSTS.find(p => p.id === selectedPost)?.title}
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div className="markdown-body prose prose-invert prose-accent max-w-none">
+                          <ReactMarkdown>{postContent}</ReactMarkdown>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                )}
+              </motion.section>
+            )}
+
+            {activeTab === 'Contact' && (
+              <motion.section
+                key="contact"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
               <div className="mb-8">
                 <h2 className="text-3xl font-bold mb-4">Contact</h2>
                 <div className="w-12 h-1 bg-accent rounded-full"></div>
@@ -361,7 +561,7 @@ const MainContent = () => {
                       </div>
                       <div>
                         <p className="text-xs text-muted uppercase font-bold tracking-wider">Location</p>
-                        <p className="text-sm">Garut, West Java, Indonesia</p>
+                        <p className="text-sm">Bandar Lampung, Lampung Regency</p>
                       </div>
                     </div>
                   </div>
@@ -404,8 +604,9 @@ const MainContent = () => {
                   </button>
                 </form>
               </div>
-            </section>
-          )}
+              </motion.section>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </main>

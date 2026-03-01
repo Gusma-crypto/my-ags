@@ -29,3 +29,13 @@
 .timeline-dot {
   @apply absolute left-[-32px] top-2 w-[16px] h-[16px] rounded-full bg-accent border-4 border-background z-10;
 }
+
+.markdown-body h1 { @apply text-3xl font-bold mt-8 mb-4 text-white; }
+.markdown-body h2 { @apply text-2xl font-bold mt-6 mb-3 text-white; }
+.markdown-body h3 { @apply text-xl font-bold mt-4 mb-2 text-white; }
+.markdown-body p { @apply text-muted leading-relaxed mb-4; }
+.markdown-body ul { @apply list-disc list-inside mb-4 text-muted; }
+.markdown-body ol { @apply list-decimal list-inside mb-4 text-muted; }
+.markdown-body li { @apply mb-1; }
+.markdown-body strong { @apply text-white font-bold; }
+.markdown-body blockquote { @apply border-l-4 border-accent pl-4 italic my-4 text-muted; }

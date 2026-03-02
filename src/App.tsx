@@ -64,12 +64,12 @@ const EXPERIENCE = [
 ];
 
 const PROJECTS = [
-  { title: "Decentralized Voting App", category: "Web3", image: "https://picsum.photos/seed/web3/800/600", url: "https://github.com/Gusma-crypto" },
-  { title: "Proxmox Cluster VE", category: "Infrastructure", image: "https://picsum.photos/seed/proxmox/800/600", url: "https://github.com/Gusma-crypto" },
-  { title: "MikroTik Hotspot System", category: "Networking", image: "https://picsum.photos/seed/mikrotik/800/600", url: "https://github.com/Gusma-crypto" },
+  // { title: "Decentralized Voting App", category: "Web3", image: "https://picsum.photos/seed/web3/800/600", url: "https://github.com/Gusma-crypto" },
+  // { title: "Proxmox Cluster VE", category: "Infrastructure", image: "https://picsum.photos/seed/proxmox/800/600", url: "https://github.com/Gusma-crypto" },
+  // { title: "MikroTik Hotspot System", category: "Networking", image: "https://picsum.photos/seed/mikrotik/800/600", url: "https://github.com/Gusma-crypto" },
   { title: "Undangan Digital", category: "Full-Stack", image: "/assets/images/undangandigital.jpg", url: "https://starundangan.my.id" },
   { title: "QR Forest", category: "Full-Stack", image: "/assets/images/arforest.jpg", url: "https://fornesia.id" },
-  { title: "Starlink Remote Setup", category: "Networking", image: "https://picsum.photos/seed/starlink/800/600", url: "https://github.com/Gusma-crypto" },
+  // { title: "Starlink Remote Setup", category: "Networking", image: "https://picsum.photos/seed/starlink/800/600", url: "https://github.com/Gusma-crypto" },
   { title: "DriftBottle Smart Contract", category: "Web3", image: "/assets/images/smartcontract.jpg", url: "https://github.com/Gusma-crypto/bottle-test?tab=readme-ov-file" },
 ];
 

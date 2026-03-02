@@ -69,6 +69,7 @@ const PROJECTS = [
   // { title: "MikroTik Hotspot System", category: "Networking", image: "https://picsum.photos/seed/mikrotik/800/600", url: "https://github.com/Gusma-crypto" },
   { title: "Undangan Digital", category: "Full-Stack", image: "/assets/images/undangandigital.jpg", url: "https://starundangan.my.id" },
   { title: "QR Forest", category: "Full-Stack", image: "/assets/images/arforest.jpg", url: "https://fornesia.id" },
+  { title: "Web Sekolah", category: "Full-Stack", image: "/assets/images/eduschool.jpg", url: "https://sekolah-livid.vercel.app" },
   // { title: "Starlink Remote Setup", category: "Networking", image: "https://picsum.photos/seed/starlink/800/600", url: "https://github.com/Gusma-crypto" },
   { title: "DriftBottle Smart Contract", category: "Web3", image: "/assets/images/smartcontract.jpg", url: "https://github.com/Gusma-crypto/bottle-test?tab=readme-ov-file" },
 ];

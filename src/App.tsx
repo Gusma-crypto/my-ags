@@ -65,7 +65,7 @@ const EXPERIENCE = [
 
 const PROJECTS = [
   // { title: "Decentralized Voting App", category: "Web3", image: "https://picsum.photos/seed/web3/800/600", url: "https://github.com/Gusma-crypto" },
-  // { title: "Proxmox Cluster VE", category: "Infrastructure", image: "https://picsum.photos/seed/proxmox/800/600", url: "https://github.com/Gusma-crypto" },
+  { title: "Proxmox Cluster VE", category: "Infrastructure", image: "/assets/images/proxmox.jpg", url: "https://github.com/Gusma-crypto/proxmox-ve" },
   // { title: "MikroTik Hotspot System", category: "Networking", image: "https://picsum.photos/seed/mikrotik/800/600", url: "https://github.com/Gusma-crypto" },
   { title: "Undangan Digital", category: "Full-Stack", image: "/assets/images/undangandigital.jpg", url: "https://starundangan.my.id" },
   { title: "QR Forest", category: "Full-Stack", image: "/assets/images/arforest.jpg", url: "https://fornesia.id" },
